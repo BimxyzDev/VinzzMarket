@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>payment VinzZz Market</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      background-color: #000;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background-image: linear-gradient(-45deg, #000, #111, #000, #111);
+      background-size: 400% 400%;
+      animation: wavebg 12s ease infinite;
+    }
+
+    @keyframes wavebg {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .loading-screen {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .spinner {
+      border: 6px solid #333;
+      border-top: 6px solid cyan;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .btn-start {
+      padding: 12px 25px;
+      font-size: 18px;
+      background-color: cyan;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #000;
+      margin-top: 20px;
+    }
+
+    .page {
+      display: none;
+      padding: 30px 20px;
+      text-align: center;
+      animation: fadeIn 0.8s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .profile-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 4px solid cyan;
+      box-shadow: 0 0 25px cyan;
+      margin: 0 auto 15px;
+      display: block;
+    }
+
+    h2 {
+      color: cyan;
+      margin-bottom: 30px;
+      text-shadow: 0 0 10px cyan;
+    }
+
+    .pay-btn {
+      display: block;
+      width: 80%;
+      margin: 10px auto;
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background-color: #111;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      box-shadow: 0 0 12px cyan;
+      cursor: pointer;
+      transition: 0.3s ease;
+      animation: pulseGlow 2s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 12px cyan; }
+      50% { box-shadow: 0 0 25px cyan; }
+      100% { box-shadow: 0 0 12px cyan; }
+    }
+
+    .pay-btn:hover {
+      background-color: cyan;
+      color: #000;
+      box-shadow: 0 0 20px cyan;
+    }
+
+    .footer {
+      margin-top: 40px;
+      font-size: 12px;
+      color: #888;
+    }
+
+    .qris-popup {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .qris-popup img {
+      width: 320px;
+      max-width: 85%;
+      border: 2px solid white;
+      border-radius: 10px;
+      box-shadow: 0 0 20px white;
+      margin-bottom: 20px;
+    }
+
+    .qris-popup p {
+      color: #fff;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .qris-popup button {
+      padding: 10px 20px;
+      background: crimson;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .qris-popup button:hover {
+      background: red;
+    }
+
+    .contact-section {
+      margin-top: 60px;
+    }
+
+    .contact-buttons {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .contact-buttons a {
+      padding: 10px 20px;
+      background: #111;
+      color: cyan;
+      border: 1px solid cyan;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    .contact-buttons a:hover {
+      background: cyan;
+      color: black;
+    }
+  </style>
+</head>
+<body>
+
+<audio id="bgm" src="https://files.catbox.moe/whcdig.mp3"></audio>
+
+<!-- Loading Screen -->
+<div class="loading-screen" id="loadingScreen">
+  <div class="spinner"></div>
+  <h2>Loading to Payment...</h2>
+  <button class="btn-start" onclick="goToPayment()">Go to Payment</button>
+</div>
+
+<!-- Payment Page -->
+<div class="page" id="paymentPage">
+  <img src="https://img1.pixhost.to/images/7178/621619793_kenjaa.jpg" alt="Profile" class="profile-img">
+  <h2>PAYMENT VINZZZ MARKET</h2>
+
+  <button class="pay-btn" onclick="copyToClipboard('083151126567')">DANA</button>
+  <button class="pay-btn" onclick="copyToClipboard('083151126567')">OVO</button>
+  <button class="pay-btn" onclick="copyToClipboard('083151126567')">GOPAY</button>
+  <button class="pay-btn" onclick="showQRIS()">QRIS</button>
+
+  <!-- Contact Buttons -->
+  <div class="contact-section">
+    <div class="contact-buttons">
+      <a href="https://wa.me/6283151126567" target="_blank">Nomor WhatsApp</a>
+      <a href="https://t.me/VinnZzzPedia" target="_blank">Kontak Telegram</a>
+    </div>
+    <div class="contact-buttons">
+      <a href="https://whatsapp.com/channel/0029Vb8r6Df9Bb5wIwCKfc32" target="_blank">📣 Channel WhatsApp</a>
+      <a href="https://whatsapp.com/channel/0029Vb8r6Df9Bb5wIwCKfc32" target="_blank">Channel Testimoni</a>
+    </div>
+  </div>
+
+  <div class="footer">© Powered by Bimxyz official || https://bimxyzdev.vercel.app </div>
+</div>
+
+<!-- QRIS POPUP -->
+<div class="qris-popup" id="qrisPopup">
+  <img src="https://img1.pixhost.to/images/7178/621619793_kenjaa.jpg"
+  <p>SILAHKAN KIRIM BUKTI PEMBAYARAN KE ADMIN</p>
+  <button onclick="hideQRIS()">Tutup</button>
+</div>
+
+<script>
+  function goToPayment() {
+    document.getElementById('bgm').play();
+    document.getElementById('loadingScreen').style.display = 'none';
+    document.getElementById('paymentPage').style.display = 'block';
+  }
+
+  function showQRIS() {
+    document.getElementById('qrisPopup').style.display = 'flex';
+  }
+
+  function hideQRIS() {
+    document.getElementById('qrisPopup').style.display = 'none';
+  }
+
+  function copyToClipboard(nomor) {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(nomor)
+        .then(() => alert("✅ Nomor berhasil disalin:\n" + nomor))
+        .catch(() => fallbackCopy());
+    } else {
+      fallbackCopy();
+    }
+
+    function fallbackCopy() {
+      const temp = document.createElement("textarea");
+      temp.value = nomor;
+      document.body.appendChild(temp);
+      temp.select();
+      try {
+        document.execCommand("copy");
+        alert("Kirim bukti transfer ke admin:\n" + nomor);
+      } catch {
+        alert("❌ Gagal menyalin nomor.");
+      }
+      document.body.removeChild(temp);
+    }
+  }
+</script>
+</body>
+  </html>
